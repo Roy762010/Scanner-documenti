@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scanner Documenti</title>
+<meta name="theme-color" content="#1d2bd8">
+<meta name="description" content="Scansiona fogli con la fotocamera e crea PDF e testo.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- HOME: lista documenti -->
+<section id="home" class="screen">
+  <header class="bar">
+    <h1>Scanner</h1>
+    <button id="installBtn" class="ghost" hidden>Installa app</button>
+  </header>
+  <div id="docList" class="list"></div>
+  <div id="emptyHome" class="empty" hidden>
+    <svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true"><rect x="28" y="14" width="64" height="88" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><path d="M40 36h40M40 50h40M40 64h28" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M14 30V16h14M106 30V16H92M14 90v14h14M106 90v14H92" fill="none" stroke="#1d2bd8" stroke-width="5" stroke-linecap="round"/></svg>
+    <p><b>Nessun documento</b><br>Premi <b>Scansiona</b> e fai una foto a un foglio.</p>
+  </div>
+  <div class="fabs">
+    <label class="fab secondary">Galleria<input type="file" accept="image/*" multiple data-new="1"></label>
+    <label class="fab">Scansiona<input type="file" accept="image/*" capture="environment" data-new="1"></label>
+  </div>
+</section>
+
+<!-- DOCUMENTO: pagine -->
+<section id="doc" class="screen" hidden>
+  <header class="bar">
+    <button class="back" data-go="home" aria-label="Indietro">‹</button>
+    <input id="docName" class="title-input" aria-label="Nome documento">
+    <button id="delDoc" class="ghost danger">Elimina</button>
+  </header>
+  <div id="pages" class="pages"></div>
+  <div class="actions">
+    <label class="act">＋ Foto<input type="file" accept="image/*" capture="environment"></label>
+    <label class="act">Galleria<input type="file" accept="image/*" multiple></label>
+    <button class="act primary" id="pdfBtn">PDF</button>
+    <button class="act" id="ocrBtn">Testo</button>
+  </div>
+</section>
+
+<!-- EDITOR: ritaglio e filtri -->
+<section id="editor" class="screen dark" hidden>
+  <header class="bar">
+    <button class="back" id="edCancel" aria-label="Annulla">‹</button>
+    <h2 id="edTitle">Sposta gli angoli sul foglio</h2>
+  </header>
+  <div class="stage" id="stage"><canvas id="edCanvas"></canvas></div>
+  <div id="cropTools" class="tools">
+    <button id="edAll">Tutta la foto</button>
+    <button id="edAuto">Rileva bordi</button>
+    <button id="edNext" class="primary">Avanti</button>
+  </div>
+  <div id="filterTools" class="tools" hidden>
+    <div class="chips" id="filters"></div>
+    <div class="row">
+      <button id="edRotate">Ruota ↻</button>
+      <button id="edBackCrop">Ritaglia</button>
+      <button id="edDelete" class="danger">Elimina</button>
+      <button id="edDone" class="primary">Fatto</button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTO -->
+<section id="text" class="screen" hidden>
+  <header class="bar">
+    <button class="back" data-go="doc" aria-label="Indietro">‹</button>
+    <h2>Testo del documento</h2>
+  </header>
+  <p id="ocrStatus" class="status"></p>
+  <textarea id="ocrText" spellcheck="false"></textarea>
+  <div class="actions">
+    <button class="act" id="copyTxt">Copia</button>
+    <button class="act" id="shareTxt">Invia</button>
+    <button class="act primary" id="wordBtn">Word</button>
+  </div>
+</section>
+
+<div id="busy" class="busy" hidden><div class="spinner"></div><p id="busyMsg">Attendi...</p></div>
+<div id="toast" class="toast" hidden></div>
+
+<script src="vendor/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
